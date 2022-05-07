@@ -246,7 +246,7 @@ $connect->close();
                                         <div class="row align-items-center ">
                                             <div class="col">
                                                 <div class="col-md-8" style="color:#CC5500;">
-                                                    <h6><b>Student Information Details </b></h6>
+                                                    <h6><b>Edit Student Information Details </b></h6>
                                                 </div>
                                             </div>
                                         </div>
@@ -309,7 +309,7 @@ $connect->close();
                                         <div class="row align-items-center ">
                                             <div class="col">
                                                 <div class="col-md-8" style="color:#CC5500;">
-                                                    <h6><b>Elementary School Details </b></h6>
+                                                    <h6><b>Edit Elementary School Details </b></h6>
                                                 </div>
                                             </div>
                                         </div> 
