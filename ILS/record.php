@@ -148,6 +148,9 @@ $connect->close();
           
                 text-align:center;
             }
+            .card-header{
+            border-top: 3px solid #CC5500;
+        }
             /*------------------------------------LOADER---------------------------------------------*/
          .loader {
             position: fixed;
@@ -200,10 +203,6 @@ $connect->close();
     </div>
     <?php require_once 'page_sections/adviserNav.php'; ?>
         
-
-         
-
-   
 
 
             <section>
@@ -665,7 +664,7 @@ $connect->close();
                                                     </select>
                                                   
                                                 </div> 
-
+  
                                               
                                                   <div class="col-md-5">
                                                     <label for="grades" class="form-label">Enter Grade</label>

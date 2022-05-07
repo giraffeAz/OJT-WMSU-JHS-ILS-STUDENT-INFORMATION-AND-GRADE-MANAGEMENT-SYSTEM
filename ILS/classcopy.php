@@ -1,29 +1,15 @@
 <?php 
 
-   require_once 'functions/session.php';
+require_once 'functions/session.php'; 
 
-   if($_SESSION['user_type']!="user")
-   {
-       
-       header("Location: accessdenied.php");
-       die;
-     
-   
-   }
-    require_once 'functions/connectdb.php';
-    require_once 'actions/db.php'
+if($_SESSION['user_type']!="admin")
+{
+    
+    header("Location: accessdenied.php");
+    die;
 
-?>
+}
  
-
-
-<?php 
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT * FROM users WHERE user_id = {$user_id}";
-$query = $connect->query($sql);
-$result = $query->fetch_assoc();
-
-$connect->close();
 ?>
 <!doctype html>
 <html lang="en">
@@ -42,8 +28,12 @@ $connect->close();
 
          <!-- Font -->
         <link href="assets/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-      
-     
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Table -->
+        <link href="assets/css/table.css" rel="stylesheet">
 
         <!-- Datatables -->
         <link href="assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -53,9 +43,9 @@ $connect->close();
         <!-- jquery ui -->  
         <link rel="stylesheet" href="assets/jquery-ui/jquery-ui.min.css">
         <script src="assets/jquery-ui/jquery-ui.min.js"></script>
-         <!-----------JSLOADER------------------>
-         <script src="assets/js/load.js"></script>
-        <title>Home</title>
+          <!-----------JSLOADER------------------>
+          <script src="assets/js/load.js"></script>
+        <title>Class</title>
 
        
         <style>
@@ -65,7 +55,7 @@ $connect->close();
         body{
             margin:0;
             min-height: 100%;
-           
+            
         }
         
         .navbar-brand{
@@ -75,6 +65,7 @@ $connect->close();
         .card-header{
             border-top: 3px solid #CC5500;
         }
+
         .cardtablePanel{
            margin-top: 3rem;
         }
@@ -105,7 +96,7 @@ $connect->close();
             border: solid 1px #CC5500 !Important;
         }
 
-        .dropdown-menu-ad > li > a
+        .dropdown-menu-admin > li > a
         {
             color: #CC5500;
         }
@@ -135,7 +126,7 @@ $connect->close();
             border-color: #CC5500;
             box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
            
-        } 
+        }
         .btn-add{
             background-color: #CC5500;
             color: white;
@@ -209,19 +200,21 @@ $connect->close();
         </style>
     </head>
     <body style="background-color:#FFF3E0;" >
-    <div class="loader">
-    <img src="assets/loader.gif" alt="Loading..." />
-    </div>
-    <?php require_once 'page_sections/adviserNav.php'; ?>
-     <!-- Begin Page Content -->
+
+    <?php require_once 'page_sections/navbar.php'; ?>
+          <!-- Begin Page Content -->
+            <!-- Begin Page Content -->
+            
      <div class="container container-fluid cardtablePanel">
-     <!-- DataTales -->
-     <div class="card shadow mb-4">
+
+     
+                <!-- DataTales -->
+                <div class="card shadow mb-4">
                     <div class="card-header py-3">
                     <?php 
                        
                         include 'functions/connectdb.php';
-                        $current_user_id = $_SESSION['user_id'];
+                        $current_user_id = $_GET['adviserid'];
                        
                         
                         $sql = "SELECT class.class_id, class.grade_id, class.adviser_id, class.section, grade.grade as gradel FROM class INNER JOIN grade ON class.grade_id = grade.grade_id  
@@ -245,7 +238,7 @@ $connect->close();
                             }
                             ?>
                         <?php
-                        include 'actions/addstudent.php';
+                        include 'actions/adminAddstudent.php';
                         ?>
 
                         <?php 
@@ -257,7 +250,7 @@ $connect->close();
                         <?php 
                        
                        include 'functions/connectdb.php';
-                       $current_user_id = $_SESSION['user_id'];
+                       $current_user_id = $_GET['adviserid'];
                       
                        
                        $sql = "SELECT class.class_id, class.grade_id, class.adviser_id, class.section, grade.grade as gradel FROM class INNER JOIN grade ON class.grade_id = grade.grade_id  
@@ -295,7 +288,6 @@ $connect->close();
                             <table class="table table-bordered" id="students" width="100%" cellspacing="0">
                                 <thead>
                                     <tr style="color:#CC5500">
-                                        <th style="display:none;">Id</th>
                                         <th >LRN </th>
                                         <th >Name of the Student</th>
                                         <th class="text-center">Action</th>
@@ -306,30 +298,33 @@ $connect->close();
                                 
                                 <tbody>
 
-                                <?php
+                                    <?php
+                                                        $current_user_id = $_GET['adviserid'];
+                                                        $class = $_GET['class'];
+                                                       
                                                         include 'functions/connectdb.php';
                                                         $add = mysqli_query($con,"SELECT student_class.sc_id, student_class.student_id, student_class.school_year, student_class.grade, student_class.section, school_year.sy_id, school_year.status, student_info.lrn_no as lrn, student_info.lastname as ln, student_info.firstname as fn, student_info.middlename as mn FROM student_class 
                                                         INNER JOIN student_info ON student_class.student_id = student_info.student_id  
                                                         INNER JOIN school_year ON student_class.school_year = school_year.sy_id 
-                                                        INNER JOIN users ON student_class.adviser_id = users.user_id WHERE school_year.status='Yes' AND student_class.adviser_id = '$current_user_id'");
+                                                        INNER JOIN users ON student_class.adviser_id = users.user_id WHERE student_class.school_year=school_year.sy_id AND student_class.adviser_id = '$current_user_id'");
                                                         while($row=mysqli_fetch_array($add)){
                                                             $student = $row["student_id"];
                                                         ?>
                                     <tr> 
                                     
                                                     
-                                        <td style="display:none;" class="student_id"><?php echo $row['student_id'] ?></td>             
+                                                      
                                         <td><?php echo $row['lrn'] ?></td>
                                         <td style="text-transform:capitalize;"><?php echo $row['ln'] ?>, <?php echo $row['fn'] ?> <?php echo $row['mn'] ?></td>
                                         <td class="d-flex justify-content-center">
-                                                <a href="viewstudentinfo.php?student=<?php echo $row['student_id'] ?>"><button class="btn btn-info info_btn" data-bs-toggle="modal" ><i class="bi bi-info-circle"></i> Info</button></a> &nbsp&nbsp&nbsp&nbsp
+                                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#infoModal" ><i class="bi bi-info-circle"></i> Info</button> &nbsp&nbsp&nbsp&nbsp
                                                 <a href="form137.php?student=<?php echo $row['student_id'] ?>"><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModal" ><i class="bi bi-eye"></i> Form 137</button></a> &nbsp&nbsp&nbsp&nbsp
-                                                <a href="record.php?student=<?php echo $row['student_id'] ?>&current=<?php echo $row['grade']?>&class=<?php echo $row['section']?>&yearid=<?php echo $row['school_year']?>"><button class="btn btn-danger"><i class="bi bi-archive"></i> Record</button></a>
-                                        </td>
-                                            <?php
+                                                <a href="classaddrecord.php?class=<?php echo  $_GET['class']; ?>&adviserid=<?php echo $_GET['adviserid']; ?>&student=<?php echo $row['student_id'] ?>&grade=<?php echo $row['grade']?>&section=<?php echo $row['section']?>&sy=<?php echo $row['school_year']?>"><button class="btn btn-danger"><i class="bi bi-archive"></i> Record</button></a>
+                                       
+                                         <?php
 
                                             include 'functions/connectdb.php';
-
+                                           
 
                                             $query = mysqli_query($con,"SELECT student_class_info.student_id, student_class_info.action, student_class_info.syl, school_year.sy_id, school_year.status FROM student_class_info 
                                             INNER JOIN school_year ON student_class_info.syl = school_year.sy_id
@@ -339,14 +334,14 @@ $connect->close();
 
 
                                             ?>
-                                            <?php if($action=='PROMOTED'){ ?>  
-
-                                            <td class="text-center" style="color:green;"> <b><?php echo $row['action']?></b></td>
-                                            <?php } elseif ($action=='RETAINED'){ ?>
-                                            <td class="text-center" style="color:red;"><b><?php echo $row['action'] ?><b></td>
-                                            <?php } else {?>
-                                            <td class="text-center"><b><?php echo $row['action'] ?><b></td>
-                                            <?php } ?>
+                                        <?php if($action=='PROMOTED'){ ?>  
+                                        
+                                        <td class="text-center" style="color:green;"> <b><?php echo $row['action']?></b></td>
+                                        <?php } elseif ($action=='RETAINED'){ ?>
+                                        <td class="text-center" style="color:red;"><b><?php echo $row['action'] ?></td><b>
+                                        <?php } else {?>
+                                            <td class="text-center"><b><?php echo $row['action'] ?></td><b>
+                                        <?php } ?>
                                     </tr>
                                
                                     <?php
@@ -359,7 +354,7 @@ $connect->close();
                         </div>
                     </div>
                 </div>
-                                    
+
                 </div>
                 <!-- /.container-fluid -->
 
@@ -471,6 +466,7 @@ $connect->close();
                                                    
                                                    
                                                     <?php
+                                                        $current_user_id = $_GET['adviserid'];
                                                         include 'functions/connectdb.php';
                                                         $add = mysqli_query($con,"SELECT class.class_id, class.grade_id, class.adviser_id, class.section, grade.grade as gradel FROM class INNER JOIN grade ON class.grade_id = grade.grade_id  
                                                         INNER JOIN users ON class.adviser_id = users.user_id WHERE class.adviser_id = '$current_user_id'");
@@ -480,6 +476,8 @@ $connect->close();
                                                        <input  type="hidden"  id="class<?php echo $row[0] ?>"  name="grade" type="text" style="border:0px" value="<?php echo $row['gradel'] ?>" readonly>
                                                        <input  type="hidden" id="class<?php echo $row[0] ?>"  name="section" type="text" style="border:0px" value="<?php echo $row[3] ?>" readonly>
                                                         <?php } mysqli_close($con); ?>
+
+                                                        <input type="hidden" name="classid"  value="<?php echo $_GET["class"] ?>">
                                                     
                                                 </div>
                                                 <div class="col-md-5">
@@ -509,4 +507,4 @@ $connect->close();
  
      
 <?php require_once 'page_sections/scripts.php'; ?>  
-<?php require_once 'page_sections/footer.php'; ?>
+<?php require_once 'page_sections/footer.php'; ?>  

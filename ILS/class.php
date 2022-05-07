@@ -1,17 +1,17 @@
 <?php 
 
-require_once 'functions/session.php';
+require_once 'functions/session.php'; 
 
 if($_SESSION['user_type']!="admin")
 {
     
     header("Location: accessdenied.php");
     die;
-  
 
 }
  
 ?>
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -29,12 +29,8 @@ if($_SESSION['user_type']!="admin")
 
          <!-- Font -->
         <link href="assets/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
-
-        <!-- Table -->
-        <link href="assets/css/table.css" rel="stylesheet">
+      
+     
 
         <!-- Datatables -->
         <link href="assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -44,9 +40,9 @@ if($_SESSION['user_type']!="admin")
         <!-- jquery ui -->  
         <link rel="stylesheet" href="assets/jquery-ui/jquery-ui.min.css">
         <script src="assets/jquery-ui/jquery-ui.min.js"></script>
-          <!-----------JSLOADER------------------>
-          <script src="assets/js/load.js"></script>
-        <title>Class</title>
+         <!-----------JSLOADER------------------>
+         <script src="assets/js/load.js"></script>
+        <title>Home</title>
 
        
         <style>
@@ -56,7 +52,7 @@ if($_SESSION['user_type']!="admin")
         body{
             margin:0;
             min-height: 100%;
-            
+           
         }
         
         .navbar-brand{
@@ -66,7 +62,6 @@ if($_SESSION['user_type']!="admin")
         .card-header{
             border-top: 3px solid #CC5500;
         }
-
         .cardtablePanel{
            margin-top: 3rem;
         }
@@ -97,7 +92,7 @@ if($_SESSION['user_type']!="admin")
             border: solid 1px #CC5500 !Important;
         }
 
-        .dropdown-menu-admin > li > a
+        .dropdown-menu-ad > li > a
         {
             color: #CC5500;
         }
@@ -127,7 +122,7 @@ if($_SESSION['user_type']!="admin")
             border-color: #CC5500;
             box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
            
-        }
+        } 
         .btn-add{
             background-color: #CC5500;
             color: white;
@@ -201,16 +196,14 @@ if($_SESSION['user_type']!="admin")
         </style>
     </head>
     <body style="background-color:#FFF3E0;" >
-
+    <div class="loader">
+    <img src="assets/loader.gif" alt="Loading..." />
+    </div>
     <?php require_once 'page_sections/navbar.php'; ?>
-          <!-- Begin Page Content -->
-            <!-- Begin Page Content -->
-            
+     <!-- Begin Page Content -->
      <div class="container container-fluid cardtablePanel">
-
-     
-                <!-- DataTales -->
-                <div class="card shadow mb-4">
+     <!-- DataTales -->
+     <div class="card shadow mb-4">
                     <div class="card-header py-3">
                     <?php 
                        
@@ -307,7 +300,7 @@ if($_SESSION['user_type']!="admin")
                                                         $add = mysqli_query($con,"SELECT student_class.sc_id, student_class.student_id, student_class.school_year, student_class.grade, student_class.section, school_year.sy_id, school_year.status, student_info.lrn_no as lrn, student_info.lastname as ln, student_info.firstname as fn, student_info.middlename as mn FROM student_class 
                                                         INNER JOIN student_info ON student_class.student_id = student_info.student_id  
                                                         INNER JOIN school_year ON student_class.school_year = school_year.sy_id 
-                                                        INNER JOIN users ON student_class.adviser_id = users.user_id WHERE student_class.school_year=school_year.sy_id AND student_class.adviser_id = '$current_user_id'");
+                                                        INNER JOIN users ON student_class.adviser_id = users.user_id WHERE school_year.status='Yes' AND student_class.adviser_id = '$current_user_id'");
                                                         while($row=mysqli_fetch_array($add)){
                                                             $student = $row["student_id"];
                                                         ?>
@@ -356,6 +349,7 @@ if($_SESSION['user_type']!="admin")
                     </div>
                 </div>
 
+                                    
                 </div>
                 <!-- /.container-fluid -->
 
@@ -379,7 +373,7 @@ if($_SESSION['user_type']!="admin")
                 <!-- End of Page Wrapper -->
             <!-- Modal -->
 <!-- ADD Modal -->
-                                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                             <div class="modal-header">
@@ -508,4 +502,4 @@ if($_SESSION['user_type']!="admin")
  
      
 <?php require_once 'page_sections/scripts.php'; ?>  
-<?php require_once 'page_sections/footer.php'; ?>  
+<?php require_once 'page_sections/footer.php'; ?>
