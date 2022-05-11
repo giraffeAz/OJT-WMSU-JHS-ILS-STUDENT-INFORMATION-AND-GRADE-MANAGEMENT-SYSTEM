@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("functions/connectdb.php"); 
 
 if(isset($_POST['deletedata']))

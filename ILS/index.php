@@ -117,7 +117,7 @@ require_once 'functions/connectdb.php';
     <div class="d-flex flex-column min-vh-100">
         <nav class="navbar bg-light shadow-sm">
             <div class="navbar-brand">
-            <img class="logo-navbar" width="30" height="30" src="assets/logo.png"> ILS JHS 
+            <img class="logo-navbar" width="40" height="40" src="assets/logo.png"> ILS JHS 
             </div>
           </nav>
         <section>

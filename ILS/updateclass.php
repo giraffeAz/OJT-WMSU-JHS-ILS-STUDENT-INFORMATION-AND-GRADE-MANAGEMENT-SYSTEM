@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("functions/connectdb.php"); 
 
 if(isset($_POST['updatedata']))
@@ -10,10 +11,13 @@ if(isset($_POST['updatedata']))
     
 
     if (mysqli_query($con, $sql)) {
-			
-			header('Location: manageclass.php');
+		
+            $_SESSION['success'] = "Successfully Update Class";
+		header('Location: manageclass.php');
 
 		} else {
+                  
+            $_SESSION['status'] = "Something Went Wrong";      
             header('Location: manageclass.php'); 
 		}
 

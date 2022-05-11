@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("functions/connectdb.php"); 
 
 if(isset($_POST['updatedata']))
@@ -11,10 +12,12 @@ if(isset($_POST['updatedata']))
     
 
     if (mysqli_query($con, $sql)) {
-			
+            $_SESSION['success'] = "Successfully Update Subject";	
 		header('Location: subjectlist.php');
-
+            
 		} else {
+                  
+            $_SESSION['status'] = "Something Went Wrong";
             header('Location: subjectlist.php'); 
 		}
 

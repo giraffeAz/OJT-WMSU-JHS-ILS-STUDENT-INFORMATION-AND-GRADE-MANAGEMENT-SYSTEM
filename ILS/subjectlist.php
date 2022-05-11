@@ -213,6 +213,34 @@ if($_SESSION['user_type']!="admin")
                         <?php
                         include 'newsubject.php';
                         ?> 
+                        <?php 
+                        if(isset($_SESSION['success']) && $_SESSION['success'] !='')
+                        {
+                            echo "<div id='alertM' class='alert alert-success d-flex align-items-center text-center' role='alert'>
+                            <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                            <div class='text-center'>
+                            ".$_SESSION['success']."
+                            </div>
+                        </div>";
+                            unset($_SESSION['success']);
+                        }
+                        ?>
+                        <?php
+
+                        if(isset($_SESSION['error']) && $_SESSION['error'] != '')
+                        {
+                            ?>
+                            <div id='alertM' class='alert alert-danger d-flex align-items-center text-center' role='alert'>
+                            <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                            <div class='text-center'>
+                            <?php echo $_SESSION['error']; ?>
+                            </div>
+                            </div>
+                        <?php   
+                        }
+                       
+                        unset($_SESSION['error']);
+                        ?>
                         <div class="div-action pull pull-right" style="padding-bottom:20px;">
                                   <button class="btn btn-add" data-bs-toggle="modal" id="addModalBtn" data-bs-target="#exampleModal" style="float:right;"><i class="bi bi-plus-lg"></i> Subject</button>
                         </div> <!--end of div-action -->
@@ -363,7 +391,7 @@ if($_SESSION['user_type']!="admin")
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                            <form class="" method="post">
+                                            <form  action="updatesubject.php" method="post" id="editForm">
                                             <input type="hidden" id="update_id" name="update_id">
                                                 <div class="col-md-12">
                                                     <label for="sub" class="form-label">Subject name</label>
@@ -411,7 +439,7 @@ if($_SESSION['user_type']!="admin")
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button id="btn_add" class="btn btn-add">Create</button>
+                                                <button id="btn_add" name="updatedata" class="btn btn-add">Update</button>
                                             </div>
                                             </form>
                                             </div>
@@ -446,22 +474,28 @@ if($_SESSION['user_type']!="admin")
                                         </div>          
      
 <?php require_once 'page_sections/scripts.php'; ?> 
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+            $('#alertM').alert('close');
+        }, 3000);
+    });
+</script>
 <script>
-  $(document).ready(function(){
-      $('.deletebtn').click(function (e){
+  $('#dataTable').on('click','.deletebtn', function(e){
           e.preventDefault();
 
         var subject_id = $(this).closest('tr').find('.subject_id').text();
         console.log(subject_id);
         $('#delete_id').val(subject_id);
         $('#deleteModal').modal('show');
-      });
-  })
+      
+  });
 </script> 
 <script>
-$(document).ready( function () {
-    $('.editbtn').on('click', function(){
-        $('#editModal').modal('show');
+
+$('#dataTable').on('click','.editbtn', function(){
+        
 
         $tr = $(this).closest ('tr');
 
@@ -474,11 +508,13 @@ $(document).ready( function () {
 
         $('#update_id').val(data[0]);
         $('#subj').val(data[1]);
-       
+
         
+       
+        $('#editModal').modal('show');
 
 
-    });
+   
 });
 </script>
 <?php require_once 'page_sections/footer.php'; ?>  

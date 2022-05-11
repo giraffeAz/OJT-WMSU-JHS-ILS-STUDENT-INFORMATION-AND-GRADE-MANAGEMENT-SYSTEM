@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("functions/connectdb.php"); 
 include("functions/func.php");
 
@@ -17,9 +18,12 @@ if(isset($_POST['resetpass']))
 
     if (mysqli_query($con, $sql)) {
 			
-			header('Location: adviserlist.php');
+            $_SESSION['success'] = "Successfully Reset Adviser Password";
+		header('Location: adviserlist.php');
 
 		} else {
+
+            $_SESSION['status'] = "Something Went Wrong";      
             header('Location: adviserlist.php'); 
 		}
 

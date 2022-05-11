@@ -214,6 +214,34 @@ if($_SESSION['user_type']!="admin")
                         <?php
                         include 'newsy.php';
                         ?> 
+                         <?php 
+                        if(isset($_SESSION['success']) && $_SESSION['success'] !='')
+                        {
+                            echo "<div id='alertM' class='alert alert-success d-flex align-items-center text-center' role='alert'>
+                            <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                            <div class='text-center'>
+                            ".$_SESSION['success']."
+                            </div>
+                        </div>";
+                            unset($_SESSION['success']);
+                        }
+                        ?>
+                        <?php
+
+                        if(isset($_SESSION['error']) && $_SESSION['error'] != '')
+                        {
+                            ?>
+                            <div id='alertM' class='alert alert-danger d-flex align-items-center text-center' role='alert'>
+                            <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                            <div class='text-center'>
+                            <?php echo $_SESSION['error']; ?>
+                            </div>
+                            </div>
+                        <?php   
+                        }
+                       
+                        unset($_SESSION['error']);
+                        ?>
                         <div class="div-action pull pull-right" style="padding-bottom:20px;">
                                   <button class="btn btn-add" data-bs-toggle="modal" id="addModalBtn" data-bs-target="#exampleModal" style="float:right;"><i class="bi bi-plus-lg"></i> School Year</button>
                         </div> <!--end of div-action -->
@@ -348,7 +376,7 @@ if($_SESSION['user_type']!="admin")
                                                 <div class="form-group">
                                                 <label for="sy" class="cols-sm-2 control-label">Current</label>
                                                 <div class="cols-sm-4" >
-                                                <select name="status" id="status" class="form-control" required>
+                                                <select name="status" id="status" class="form-select" required>
                                                 <option disabled selected > </option>
                                                 <option>No</option>
                                                 <option>Yes</option>
@@ -370,15 +398,17 @@ if($_SESSION['user_type']!="admin")
                                         </div>
                                         </div>
                                        
-
-                                        
-
-                    
-     
-<?php require_once 'page_sections/scripts.php'; ?>    
+<?php require_once 'page_sections/scripts.php'; ?> 
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+            $('#alertM').alert('close');
+        }, 3000);
+    });
+</script>
 <script>
-$(document).ready( function () {
-    $('.editbtn').on('click', function(){
+ $('#dataTable').on('click','.editbtn', function(){   
+
         $('#editmodal').modal('show');
 
         $tr = $(this).closest ('tr');
@@ -394,9 +424,6 @@ $(document).ready( function () {
         $('#school_year').val(data[1]);
         $('#status option:selected').text(data[2]);
         
-
-
-    });
 });
 </script>
 

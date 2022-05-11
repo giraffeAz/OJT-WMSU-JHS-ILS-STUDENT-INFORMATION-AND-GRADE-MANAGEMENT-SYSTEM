@@ -169,6 +169,7 @@ if($_SESSION['user_type']!="admin")
         .row-try{
             background-color:black;
         }
+        
          /*------------------------------------LOADER---------------------------------------------*/
          .loader {
             position: fixed;
@@ -211,7 +212,35 @@ if($_SESSION['user_type']!="admin")
                         <h6 class="m-0 font-weight-bold" >Manage Class</h6>
                         <?php
                         include 'newclass.php';
-                            ?> 
+                        ?> 
+                         <?php 
+                        if(isset($_SESSION['success']) && $_SESSION['success'] !='')
+                        {
+                            echo "<div id='alertM' class='alert alert-success d-flex align-items-center text-center' role='alert'>
+                            <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                            <div class='text-center'>
+                            ".$_SESSION['success']."
+                            </div>
+                        </div>";
+                            unset($_SESSION['success']);
+                        }
+                        ?>
+                        <?php
+
+                        if(isset($_SESSION['error']) && $_SESSION['error'] != '')
+                        {
+                            ?>
+                            <div id='alertM' class='alert alert-danger d-flex align-items-center text-center' role='alert'>
+                            <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                            <div class='text-center'>
+                            <?php echo $_SESSION['error']; ?>
+                            </div>
+                            </div>
+                        <?php   
+                        }
+                        
+                        unset($_SESSION['error']);
+                        ?>
                         <div class="div-action pull pull-right" style="padding-bottom:20px;">
                                   <button class="btn btn-add" data-bs-toggle="modal" id="addCategoriesModalBtn" data-bs-target="#exampleModal" style="float:right;"><i class="bi bi-plus-lg"></i> Class</button>
                         </div> <!--end of div-action -->
@@ -291,7 +320,7 @@ if($_SESSION['user_type']!="admin")
 
                 </div>
                 <!-- End of Page Wrapper -->
- <!--ADD  Modal -->
+ <!--ADD  Modal -->  
                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable " id="">
                                             <div class="modal-content">
@@ -373,7 +402,7 @@ if($_SESSION['user_type']!="admin")
                                                 </div>
                                                 <div class="col-md-12" >
                                                     <label for="adviserlist" class="form-label">Class Adviser</label>
-                                                    <select  name="adviserl" id="adviserl" class="form-control" required>
+                                                    <select  name="adviserl" id="adviserl" class="form-select" required>
                                                     <option disabled selected > </option>
                                                     <?php
                                                         include 'functions/connectdb.php';
@@ -432,10 +461,17 @@ if($_SESSION['user_type']!="admin")
             
 
 <?php require_once 'page_sections/scripts.php'; ?>  
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+            $('#alertM').alert('close');
+        }, 3000);
+    });
+ 
+</script>
 <script>
+$('#dataTable').on('click','.editbtn', function(){
 
-$(document).ready( function () {
-    $('.editbtn').on('click', function(){
         $('#editmodal').modal('show');
 
         $tr = $(this).closest ('tr');
@@ -450,23 +486,21 @@ $(document).ready( function () {
         $('#update_id').val(data[0]);
         $('#grade').val(data[1]);
         $('#section').val(data[2]);
-        $('#adviserl option:selected').val(data[3]);
+        $('#adviserl option:selected').text(data[3]);
    
       
-
-    });
 });
 </script>
 <script>
-  $(document).ready(function(){
-      $('.deletebtn').click(function (e){
+$('#dataTable').on('click','.deletebtn', function(e){ 
+
           e.preventDefault();
 
         var class_id = $(this).closest('tr').find('.class_id').text();
         console.log(class_id);
         $('#delete_id').val(class_id);
         $('#deleteModal').modal('show');
-      });
+
   })
 </script>     
 

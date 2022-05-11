@@ -100,11 +100,11 @@ $connect->close();
 
             .modal-header {
                 background: #CC5500;
-                color: white;
-            }
+                color: white; 
+            } 
             .card-header{
             border-top: 3px solid #CC5500;
-        }
+            }
 
 
             .footer {
@@ -202,7 +202,7 @@ $connect->close();
     </div>
     <?php require_once 'page_sections/adviserNav.php'; ?>
         
-
+    
 
             <section>
             <nav aria-label="breadcrumb" style="margin:2rem">
@@ -233,12 +233,24 @@ $connect->close();
 
 
                                 ?>
-                                <?php echo $row['lastname'] . ', ' . $row['firstname']. ' ' . $row['middlename'] ?><a style="align-items:right" href="editstudentinfo.php?student=<?php echo $_GET['student']; ?>"> <button class="btn btn-success btn-record"><i class="bi bi-pencil-square"></i> Edit</button></a>
+                                <?php echo $row['lastname'] . ', ' . $row['firstname']. ' ' . $row['middlename'] ?>
+                                <a  href="editstudentinfo.php?student=<?php echo $_GET['student']; ?>"> <button class="btn btn-success btn-record" style="align-items:right"><i class="bi bi-pencil-square"></i> Edit</button></a>
                                
                             </div>
             
                             <div class="card-body">
-                                                        
+                            <?php 
+                            if(isset($_SESSION['success']) && $_SESSION['success'] !='')
+                            {
+                                echo "<div id='alertM' class='alert alert-success d-flex align-items-center text-center' role='alert'>
+                                <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                                <div class='text-center'>
+                                ".$_SESSION['success']."
+                                </div>
+                            </div>";
+                                unset($_SESSION['success']);
+                            }
+                            ?>                     
                           
                                    
                                     <div class="container container-section mt-2 pt-2">

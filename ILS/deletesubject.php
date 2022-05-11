@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("functions/connectdb.php"); 
 
 if(isset($_POST['deletedata']))
@@ -10,9 +11,12 @@ if(isset($_POST['deletedata']))
 
     if (mysqli_query($con, $sql)) {
 			
-			header('Location: subjectlist.php');
+            $_SESSION['success'] = "Successfully Deleted";
+		header('Location: subjectlist.php');
 
 		} else {
+
+                  $_SESSION['error'] = "Something Went Wrong";       
             header('Location: subjectlist.php'); 
 		}
 

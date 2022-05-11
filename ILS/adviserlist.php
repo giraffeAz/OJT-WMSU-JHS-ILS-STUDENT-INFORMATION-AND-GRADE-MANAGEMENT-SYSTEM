@@ -1,7 +1,6 @@
 <?php 
 
 require_once 'functions/session.php';
-
 if($_SESSION['user_type']!="admin")
 {
     
@@ -210,27 +209,24 @@ if($_SESSION['user_type']!="admin")
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold" >Manage Adviser</h6>
                         <?php include 'actions/addAdviser.php' ?>
-                        <?php
-
-                        if(isset($_SESSION['success']) && $_SESSION['success'] != '')
+                        <?php 
+                        if(isset($_SESSION['success']) && $_SESSION['success'] !='')
                         {
-                            ?>
-                            <div id='add-adviser-messages' class='alert alert-success d-flex align-items-center text-center' role='alert'>
+                            echo "<div id='alertM' class='alert alert-success d-flex align-items-center text-center' role='alert'>
                             <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
                             <div class='text-center'>
-                            <?php echo $_SESSION['success']; ?>
+                            ".$_SESSION['success']."
                             </div>
-                            </div>
-                        <?php
+                        </div>";
+                            unset($_SESSION['success']);
                         }
-                        unset($_SESSION['success']);
                         ?>
                         <?php
 
                         if(isset($_SESSION['error']) && $_SESSION['error'] != '')
                         {
                             ?>
-                            <div id='add-adviser-messages' class='alert alert-danger d-flex align-items-center text-center' role='alert'>
+                            <div id='alertM' class='alert alert-danger d-flex align-items-center text-center' role='alert'>
                             <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
                             <div class='text-center'>
                             <?php echo $_SESSION['error']; ?>
@@ -252,8 +248,10 @@ if($_SESSION['user_type']!="admin")
                                 <thead>
                                     <tr style="color:#CC5500">
                                         <th style="display:none;">Id</th>
-                                        
-                                        <th >Name of Class Adviser</th>
+                                        <th >Name of Adviser</th>
+                                        <th style="display:none;">Last Name</th>
+                                        <th style="display:none;">First Name</th>
+                                        <th style="display:none;">Middle Name</th>
                                         <th class="text-center">Username</th>
                                         <th class="text-center">Password</th>
                                        
@@ -280,6 +278,9 @@ if($_SESSION['user_type']!="admin")
                                    <tr>
                                        <td style="display:none;" class="adviser_id"><?php echo $row['user_id'] ?></td>
                                        <td  style="text-transform: capitalize;"><?php echo $row['lastname'] ?>, <?php echo $row['firstname'] ?>  <?php echo $row['middlename'] ?></td>
+                                       <td  style="display:none; text-transform: capitalize;"><?php echo $row['lastname'] ?></td>
+                                       <td  style="display:none; text-transform: capitalize;"><?php echo $row['firstname'] ?></td>
+                                       <td  style="display:none; text-transform: capitalize;"><?php echo $row['middlename'] ?></td>
                                        <td ><?php echo $row['username'] ?></td>
                                        <td class="text-center">**********</td>
                                        <td class="d-flex justify-content-center">
@@ -441,7 +442,7 @@ if($_SESSION['user_type']!="admin")
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                            <form >
+                                            <form action="updateadviser.php" method="post">
                                             <input type="hidden" id="update_id" name="update_id">
                                              <div class="col-md-12">
                                                     <label for="lastname" class="form-label">Last name</label>
@@ -455,7 +456,7 @@ if($_SESSION['user_type']!="admin")
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label for="firstname" class="form-label">Middle name</label>
-                                                    <input type="text" name="firstname" class="form-control"  id="middlename"  required>
+                                                    <input type="text" name="middlename" class="form-control"  id="middlename"  required>
                                                     
                                                 </div>
 
@@ -505,37 +506,38 @@ if($_SESSION['user_type']!="admin")
                                                       
                                        
 <?php require_once 'page_sections/scripts.php'; ?>  
-
+<script type="text/javascript">
+    $(document).ready(function(){
+        setTimeout(function(){
+            $('#alertM').alert('close');
+        }, 3000);
+    });
+ 
+</script>
 <script>
-  $(document).ready(function(){
-      $('.deletebtn').click(function (e){
+   $('#manageAdviserTable').on('click','.deletebtn', function(e){ 
           e.preventDefault();
 
         var adviser_id = $(this).closest('tr').find('.adviser_id').text();
         console.log(adviser_id);
         $('#delete_id').val(adviser_id);
         $('#deleteModal').modal('show');
-      });
-  })
+    
+  });
 </script> 
 
 <script>
-  $(document).ready(function(){
-      $('.resetbtn').click(function (e){
-          e.preventDefault();
-
+    $('#manageAdviserTable').on('click','.resetbtn', function(e){ 
+        e.preventDefault();
         var adviser_id = $(this).closest('tr').find('.adviser_id').text();
         console.log(adviser_id);
         $('#reset_id').val(adviser_id);
         $('#resetmodal').modal('show');
       });
-  })
 </script> 
    
 <script>
-
-$(document).ready( function () {
-    $('.editbtn').on('click', function(){
+  $('#manageAdviserTable').on('click','.editbtn', function(){ 
         $('#editmodal').modal('show');
 
         $tr = $(this).closest ('tr');
@@ -548,16 +550,16 @@ $(document).ready( function () {
         console.log(data);
 
         $('#update_id').val(data[0]);
-        $('#lastname').val(data[1]);
-        $('#firstname').val(data[2]);
-        $('#middlename').val(data[3]);
-        $('#username').val(data[3]);
+        $('#lastname').val(data[2]);
+        $('#firstname').val(data[3]);
+        $('#middlename').val(data[4]);
+        $('#username').val(data[5]);
        
         
 
 
     });
-});
+
 </script>
 <script>
    const togglePassword = document.querySelector("#togglePassword");

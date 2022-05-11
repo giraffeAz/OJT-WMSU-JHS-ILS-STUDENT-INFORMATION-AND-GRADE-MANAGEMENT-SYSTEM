@@ -421,7 +421,7 @@ $connect->close();
                                               <div  class="col-md-12" > 
                                                <div class="col-md-3">
                                                     <label for="sex" class="form-label">Sex</label>
-                                                    <select  id="sex"  name="sex" class="form-control input-xs" placeholder="Select" required>
+                                                    <select  id="sex"  name="sex" class="form-select input-xs" placeholder="Select" required>
                                                     <option disabled selected>Select Sex</option>
                                                     <option>Male</option>
                                                     <option>Female</option>

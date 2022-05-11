@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("functions/connectdb.php"); 
 
 if(isset($_POST['updatedata']))
@@ -11,10 +12,13 @@ if(isset($_POST['updatedata']))
     $sql2 = mysqli_query($con,"UPDATE school_year SET status='No' WHERE sy_id != '$id'");
 
     if (mysqli_query($con, $sql)) {
-			
-			header('Location: schoolyearlist.php');
+		
+            $_SESSION['success'] = "Successfully Update School Year Status";
+		header('Location: schoolyearlist.php');
 
 		} else {
+
+            $_SESSION['status'] = "Something Went Wrong";
             header('Location: schoolyearlist.php'); 
 		}
 

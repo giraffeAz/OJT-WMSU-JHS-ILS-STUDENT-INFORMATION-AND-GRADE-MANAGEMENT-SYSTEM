@@ -203,7 +203,7 @@ $connect->close();
     <img src="assets/loader.gif" alt="Loading..." />
     </div>
     <?php require_once 'page_sections/adviserNav.php'; ?>
-        
+   
 
 
             <section>
@@ -237,11 +237,41 @@ $connect->close();
 
                                 ?>
                                 <?php echo $row['lastname'] . ', ' . $row['firstname']. ' ' . $row['middlename'] ?>
-                               
+                                <?php
+                                            } mysqli_close($con);
+                                ?>
                             </div>
             
                             <div class="card-body">
-                            <form class=""  method="post">   
+                            <?php
+
+                            if(isset($_SESSION['error']) && $_SESSION['error'] != '')
+                            {
+                                ?>
+                                <div id='alertM' class='alert alert-danger d-flex align-items-center text-center' role='alert'>
+                                <svg class='bi flex-shrink-0 me-2' width='24' height='24' role='img' aria-label='Danger:'><use xlink:href='#exclamation-triangle-fill'/></svg>
+                                <div class='text-center'>
+                                <?php echo $_SESSION['error']; ?>
+                                </div>
+                                </div>
+                            
+                            <?php   
+                            }
+
+                            unset($_SESSION['error']);
+                            ?>
+                             <?php include 'updatestudentinfo.php'; ?>
+                             
+                            <form action="updatestudentinfo.php"  method="post">  
+                            <input type="hidden" name="student_id" value=" <?php echo $_GET['student'];?>" >  
+                            <?php
+                                include 'functions/connectdb.php'; 
+                                $student = $_GET['student'];
+                                $sql=  mysqli_query($con, "SELECT * FROM student_info where student_id = '$student' ");
+                                while($row = mysqli_fetch_assoc($sql)) {
+
+
+                                ?>
                                     <div class="container container-section mt-2 pt-2">
                                         <div class="row align-items-center ">
                                             <div class="col">
@@ -255,7 +285,7 @@ $connect->close();
                                                
                                                 <div class="col-md-2">
                                                 <b><label for="lrn" class="form-label">LRN</label></b>
-                                                <input type="text" class="form-control" autocomplete="off" id="lrn" name="lrn" pattern="[0-9]+" value=" <?php echo $row['lrn_no'];?>"  maxlength="12" required>  
+                                                <input type="text" class="form-control" autocomplete="off" id="lrn" name="lrn" pattern="[0-9]+" maxlength="12" value="<?php echo $row['lrn_no'];?>">  
                                                 </div>
                                             </div>
                                         
@@ -264,20 +294,20 @@ $connect->close();
                                             <div class="col">
                                             <div class="col-md-8">
                                                 <b> <label for="ln" class="form-label">Last name</label></b>
-                                                <input type="text" class="form-control" autocomplete="off" id="name" name="lname" value="<?php echo $row['lastname'];?>"  required>
+                                                <input type="text" class="form-control" autocomplete="off" id="name" name="lname" value="<?php echo $row['lastname'];?>"  >
                                             </div> 
                                             </div>
 
                                             <div class="col">
                                             <div class="col-md-8">
                                                 <b> <label for="ln" class="form-label">First name</label></b>
-                                                <input type="text" class="form-control" autocomplete="off" id="name" name="fname" value="<?php echo $row['firstname'];?>"  required>
+                                                <input type="text" class="form-control" autocomplete="off" id="name" name="fname" value="<?php echo $row['firstname'];?>"  >
                                             </div> 
                                             </div>
                                             <div class="col">
                                             <div class="col-md-8">
                                                 <b> <label for="ln" class="form-label">Middle name</label></b>
-                                                <input type="text" class="form-control" autocomplete="off" id="name" name="mname" value="<?php echo $row['middlename'];?>"  required>
+                                                <input type="text" class="form-control" autocomplete="off" id="name" name="mname" value="<?php echo $row['middlename'];?>" >
                                             </div> 
                                             </div>
                                            
@@ -287,7 +317,7 @@ $connect->close();
                                             <div class="col">
                                             <div class="col-md-2">
                                                 <b> <label for="ln" class="form-label">Sex</label></b>
-                                                <select  id="sex"  name="sex" class="form-control input-xs" required>
+                                                <select  id="sex"  name="sex" class="form-select input-xs" >
                                                     <option disabled selected><?php echo $row['sex'];?></option>
                                                     <option>Male</option>
                                                     <option>Female</option>
@@ -300,7 +330,7 @@ $connect->close();
                                             <div class="col">
                                             <div class="col-md-2">
                                                 <b>  <label for="ln" class="form-label">Date of Birth</label></b>
-                                                <input id="dob" name="dob" type="date" value="<?php echo $row['date_of_birth'];?>" class="form-control input-md" required="">
+                                                <input id="dob" name="dob" type="date" class="form-control input-md"  value="<?php echo $row['date_of_birth'];?>">
                                                 
                                             </div> 
                                             </div>        
@@ -318,7 +348,7 @@ $connect->close();
                                                 <div class="col">
                                                 <div class="col-md-8">
                                                     <b><label for="sid" class="form-label">School ID</label></b>
-                                                    <input type="text" class="form-control" id="sid" name="sid" pattern="[0-9]+" maxlength="6" value="<?php echo $row['school_id'];?>"  required>
+                                                    <input type="text" class="form-control" id="sid" name="sid" pattern="[0-9]+" maxlength="6" value="<?php echo $row['school_id'];?>"  >
                                                 </div> 
                                                 </div>  
                                                       
@@ -327,7 +357,7 @@ $connect->close();
                                                 <div class="col">
                                                 <div class="col-md-8">
                                                     <b><label for="icc" class="form-label">Name of School</label></b>
-                                                    <input type="text" class="form-control" id="icc" name="icc" value="<?php echo $row['elementary_school'];?>" required>
+                                                    <input type="text" class="form-control" id="elems" name="elems" value="<?php echo $row['elementary_school'];?>" >
                                                 </div> 
                                                 </div>     
                                         </div>
@@ -335,7 +365,7 @@ $connect->close();
                                                 <div class="col">
                                                 <div class="col-md-8">
                                                     <b><label for="icc" class="form-label">School Address</label></b>
-                                                    <input type="text" class="form-control" id="s_add" name="s_add" aria-describedby="inputGroupPrepend" value="<?php echo $row['school_address'];?>" required>
+                                                    <input type="text" class="form-control" id="s_add" name="s_add" aria-describedby="inputGroupPrepend" value="<?php echo $row['school_address'];?>" >
                                                 </div> 
                                                 </div>        
                                         </div> 
@@ -343,24 +373,27 @@ $connect->close();
                                                 <div class="col">
                                                 <div class="col-md-8">
                                                     <b><label for="icc" class="form-label">General Average</label></b>
-                                                    <input  class="form-control" id="ave" name="ave" type="integer" aria-describedby="inputGroupPrepend" pattern="[0-9]+" maxlength="2" value="<?php echo $row['gen_ave'];?>" required>
+                                                    <input  class="form-control" id="ave" name="ave" type="integer" aria-describedby="inputGroupPrepend" pattern="[0-9]+" maxlength="2" value="<?php echo $row['gen_ave'];?>" >
                                                 </div> 
                                                 </div>        
                                         </div> 
+                                        
                                     </div>   
-                                                <?php
-                                } mysqli_close($con);
-                                ?>
+                                  
                                 </div>
+                                  <?php
+                                            } mysqli_close($con);
+                                ?>
                                         <div class="modal-footer">
                                                         <a href="viewstudentinfo.php?student=<?php echo $student ?>"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button></a>
-                                                        <input type="submit" class="btn btn-add " name="submitb" value="Save">
+                                                        <button  name="updatedata" class="btn btn-add">Update</button>
                                                         </form>
                                         </div>
                             </div>
+                            
                         </div>
                                         
-                  
+                   
         
             </section>
 
