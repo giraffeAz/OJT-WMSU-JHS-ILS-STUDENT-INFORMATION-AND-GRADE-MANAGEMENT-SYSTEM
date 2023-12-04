@@ -1,0 +1,4 @@
+# OJT-WMSU-JHS-ILS-STUDENT-INFORMATION-AND-GRADE-MANAGEMENT-SYSTEM
+<p align="center"><a href="https://drive.google.com/uc?export=view&id=1QKPp_jY5txOfD68kq3_35m16Yryv2hHD"><img src="https://drive.google.com/uc?export=view&id=1QKPp_jY5txOfD68kq3_35m16Yryv2hHD" style="width: 650px; max-width: 100%; height: auto" title="OJT" /></p>
+<p align="center"><a href="https://drive.google.com/uc?export=view&id=1QOnnPxHX7SmI5t_GuYV_qpxGUfNxyWWY"><img src="https://drive.google.com/uc?export=view&id=1QOnnPxHX7SmI5t_GuYV_qpxGUfNxyWWY" style="width: 650px; max-width: 100%; height: auto" title="OJT" /></p>
+<p align="center"><a href="https://drive.google.com/uc?export=view&id=1QIExcAuoIODsnGTRT9krzX4hb8h9vhIS"><img src="https://drive.google.com/uc?export=view&id=1QIExcAuoIODsnGTRT9krzX4hb8h9vhIS" style="width: 650px; max-width: 100%; height: auto" title="OJT" /></p>
